@@ -1,0 +1,32 @@
+{
+  "name": "DotDotDots",
+  "version": "1.0.0",
+  "description": "A digital rendition of Yayoi Kusama's dot-covered Obliteration Room",
+  "engines": {
+    "node": "6.11.x"
+  },
+  "scripts": {
+    "start": "node server",
+    "dev": "nodemon server",
+    "heroku-postbuild": "cd react-ui/ && npm install && npm install --only=dev --no-shrinkwrap && npm run build"
+  },
+  "cacheDirectories": [
+    "node_modules",
+    "react-ui/node_modules"
+  ],
+  "dependencies": {
+    "axios": "^0.17.1",
+    "body-parser": "^1.18.2",
+    "express": "^4.14.1",
+    "mongoose": "^4.13.2",
+    "mongoose-timestamp": "^0.6.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "nodemon": "^1.12.1"
+  }
+}

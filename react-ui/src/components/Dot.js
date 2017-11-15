@@ -1,6 +1,6 @@
 import React from 'react';
-import Popover, {PopoverAnimationVertical} from 'material-ui/Popover';
 import '../css/Dot.css';
+import $ from 'jquery';
 
 const Dot = (props) => {
 
@@ -16,6 +16,7 @@ const Dot = (props) => {
   }
   // this.sentiment = props.dot.sentiment;
   // this.score = props.dot.score
+
 
   return (
     <div className="tooltip" style={divStyle}>

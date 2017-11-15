@@ -1,30 +1,36 @@
 .dot {
   padding: 0;
-  margin: 0; }
+  margin: 0;
+}
 
 #room {
   position: absolute;
-  top: 0px;
-  bottom: 0px;
-  width: 100%; }
+  top:0px;
+  bottom:0px;
+  width: 100%;
+}
 
 h1 {
   font-family: 'EB Garamond', cursive;
   font-size: 2.1em;
   color: black;
   margin: 0px;
-  padding: 20px 10px 0; }
+  padding: 20px 10px 0;
+}
 
 .imgResponsive {
   width: 100%;
   height: auto;
-  display: block; }
+  display:block
+}
 
 .imgCenter {
   height: 350px;
   background-repeat: no-repeat !important;
   background-size: cover !important;
-  background-position: center !important; }
+  background-position: center !important;
+}
 
 #obliterationRoom {
-  background-image: url(./../../public/yayoi-kusama-give-me-love-david-zwirner-new-york-designboom-05.jpg); }
+  background-image: url(./../../public/yayoi-kusama-give-me-love-david-zwirner-new-york-designboom-05.jpg);
+}

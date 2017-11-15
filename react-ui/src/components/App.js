@@ -3,7 +3,6 @@ import $ from 'jquery';
 import axios from 'axios';
 // import injectTapEventPlugin from 'react-tap-event-plugin';
 import {MuiThemeProvider, Dialog, TextField, RaisedButton, FlatButton} from 'material-ui';
-import Popover, {PopoverAnimationVertical} from 'material-ui/Popover';
 
 import Dots from './Dots.js';
 import '../css/App.css';
@@ -104,6 +103,23 @@ class App extends Component {
       popupOpen: false,
       charCountErr: false
     });
+    //calculate size based on value
+    let valLength = this.state.value.length;
+    if (valLength <= 15) {
+      this.size = '10px';
+    }
+    if (valLength > 15 && valLength <= 30) {
+      this.size = '20px'
+    }
+    if (valLength > 30 && valLength <= 60) {
+      this.size = '40px'
+    }
+    if (valLength > 60 && valLength <= 120) {
+      this.size = '60px'
+    }
+    if (valLength > 120 && valLength <= 140) {
+      this.size = '120px'
+    }
     axios.post('/dot', {
       note: this.state.value,
       ycord: this.ycord,
@@ -131,7 +147,21 @@ class App extends Component {
     win.focus();
   }
 
+
+
+
   render () {
+
+    $( ".tooltip" ).hover(
+      function(event) {
+        var dotSize = $(event.target).css('height');
+        dotSize = dotSize.split('px')
+        dotSize = parseInt(dotSize[0]) / 2;
+        var div = $(event.target).children();
+        var left = -105 + dotSize;
+        $(div[0]).css({'top': dotSize, 'left': left});
+      }
+    );
     const actions = [
       <FlatButton
         label="Close"
@@ -139,14 +169,14 @@ class App extends Component {
         onClick={this.handleClose}
       />
     ];
-    const style = {
-      height: 100,
-      width: 100,
-      margin: 20,
-      textAlign: 'center',
-      display: 'inline-block',
-      zIndex: 20000
-    };
+    // const style = {
+    //   height: 100,
+    //   width: 100,
+    //   margin: 20,
+    //   textAlign: 'center',
+    //   display: 'inline-block',
+    //   zIndex: 20000
+    // };
 
     var textFieldOpts = {
       hintText: "What's on your mind?",
@@ -167,16 +197,7 @@ class App extends Component {
         <div id='room' onClick={this.addDot} >
           {/* <div style={{marginTop:'20px', marginLeft: '15px', fontFamily: 'Helvetica'}}>There are {this.state.dots.length} dots and thoughts.</div> */}
           <Dots dots={this.state.dots} sentiment={this.state.sentimentArr}/>
-          {/* <Popover
-            open={this.state.popupOpen}
-            anchorEl={this.state.anchorEl}
-            anchorOrigin={{horizontal: 'middle', vertical: 'center'}}
-            targetOrigin={{horizontal: 'middle', vertical: 'center'}}
-            style={{padding: '10px'}}
-            animation={PopoverAnimationVertical}
-          > */}
           <Dialog
-            // actions={actions}
             modal={false}
             open={this.state.popupOpen}
             onRequestClose={this.handleFormClose}
@@ -184,6 +205,14 @@ class App extends Component {
             contentStyle={{ maxWidth: '300px'}}
             style={{textAlign: "center", padding: "0px"}}
           >
+            <i
+              className="clear material-icons"
+              style={{cursor: 'pointer', display: 'flex', justifyContent: 'flex-end', padding: '10px 10px 0 0'}}
+              onClick={this.handleFormClose}
+            >
+              clear
+            </i>
+
             <TextField
               {...textFieldOpts}
             />

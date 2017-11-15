@@ -85,6 +85,7 @@ class App extends Component {
 
   handleFormClose () {
     this.setState({popupOpen: false});
+    $('.temp').remove();
   };
 
   handleChange(event) {
@@ -164,21 +165,30 @@ class App extends Component {
     return (
       <MuiThemeProvider>
         <div id='room' onClick={this.addDot} >
-          <div style={{marginTop:'20px', marginLeft: '15px', fontFamily: 'Helvetica'}}>There are {this.state.dots.length} dots and thoughts.</div>
+          {/* <div style={{marginTop:'20px', marginLeft: '15px', fontFamily: 'Helvetica'}}>There are {this.state.dots.length} dots and thoughts.</div> */}
           <Dots dots={this.state.dots} sentiment={this.state.sentimentArr}/>
-          <Popover
+          {/* <Popover
             open={this.state.popupOpen}
             anchorEl={this.state.anchorEl}
             anchorOrigin={{horizontal: 'middle', vertical: 'center'}}
             targetOrigin={{horizontal: 'middle', vertical: 'center'}}
             style={{padding: '10px'}}
             animation={PopoverAnimationVertical}
+          > */}
+          <Dialog
+            // actions={actions}
+            modal={false}
+            open={this.state.popupOpen}
+            onRequestClose={this.handleFormClose}
+            bodyStyle={{padding: "0px"}}
+            contentStyle={{ maxWidth: '300px'}}
+            style={{textAlign: "center", padding: "0px"}}
           >
             <TextField
               {...textFieldOpts}
             />
-            <RaisedButton label="Submit" primary={true} style={{display: 'block', marginTop: '15px'}} onClick={this.closeAndSave}/>
-          </Popover>
+            <RaisedButton label="Submit" primary={true} style={{display: 'block', marginTop: '10px', paddingRight: '10px', paddingLeft: '10px', paddingBottom: '10px'}} onClick={this.closeAndSave}/>
+          </Dialog>
           <Dialog
             actions={actions}
             modal={false}

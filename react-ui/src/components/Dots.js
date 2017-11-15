@@ -8,7 +8,7 @@ const Dots = (props) => (
       <span></span> :
       props.dots.map((dot, index) => {
         props.sentiment.push(dot.sentiment);
-        return <Dot dot={dot} key={index} />
+        return <Dot dot={dot} key={index}/>
       })
     }
   </div>

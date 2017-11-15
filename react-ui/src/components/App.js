@@ -6,7 +6,6 @@ import {MuiThemeProvider, Dialog, TextField, RaisedButton, FlatButton} from 'mat
 import Popover, {PopoverAnimationVertical} from 'material-ui/Popover';
 
 import Dots from './Dots.js';
-import Dot from './Dot.js';
 import '../css/App.css';
 
 
@@ -20,7 +19,8 @@ class App extends Component {
       open: true,
       popupOpen: false,
       anchorEl: undefined,
-      value: ""
+      value: "",
+      charCountErr: false,
     }
     this.xcord = undefined;
     this.ycord = undefined;
@@ -32,6 +32,7 @@ class App extends Component {
     this.closeAndSave = this.closeAndSave.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleFormClose = this.handleFormClose.bind(this);
+    this.openInNewTab = this.openInNewTab.bind(this);
   }
 
   componentDidMount() {
@@ -87,12 +88,20 @@ class App extends Component {
   };
 
   handleChange(event) {
-    this.setState({value: event.target.value});
+    if (event.target.value.length > 140) {
+      this.setState({charCountErr: true});
+    } else {
+      this.setState({
+        value: event.target.value,
+        charCountErr: false
+      });
+    }
   }
 
   closeAndSave() {
     this.setState({
-      popupOpen: false
+      popupOpen: false,
+      charCountErr: false
     });
     axios.post('/dot', {
       note: this.state.value,
@@ -116,12 +125,17 @@ class App extends Component {
   .catch( error => console.log(error));
 }
 
+  openInNewTab(url) {;
+    var win = window.open(url, '_blank');
+    win.focus();
+  }
+
   render () {
     const actions = [
       <FlatButton
         label="Close"
         primary={true}
-        // onTouchTap={this.handleClose}
+        onClick={this.handleClose}
       />
     ];
     const style = {
@@ -132,6 +146,20 @@ class App extends Component {
       display: 'inline-block',
       zIndex: 20000
     };
+
+    var textFieldOpts = {
+      hintText: "What's on your mind?",
+      multiLine: true,
+      rows: 1,
+      rowsMax: 4,
+      value: this.state.value,
+      onChange: this.handleChange
+    };
+
+    if (this.state.charCountErr) {
+      textFieldOpts['errorText'] = "Sorry, there is a 140 character limit. Let your concise skills shine!";
+      textFieldOpts['errorStyle'] = {lineHeight: '1.1em'};
+    }
 
     return (
       <MuiThemeProvider>
@@ -147,24 +175,23 @@ class App extends Component {
             animation={PopoverAnimationVertical}
           >
             <TextField
-              hintText="What's on your mind?"
-              multiLine={true}
-              rows={1}
-              rowsMax={4}
-              value={this.state.value}
-              onChange={this.handleChange}
+              {...textFieldOpts}
             />
-            <RaisedButton label="Submit" primary={true} onClick={this.closeAndSave}/>
+            <RaisedButton label="Submit" primary={true} style={{display: 'block', marginTop: '15px'}} onClick={this.closeAndSave}/>
           </Popover>
           <Dialog
-            title="Dot Dot Dots"
-            // actions={actions}
+            actions={actions}
             modal={false}
             open={this.state.open}
             onRequestClose={this.handleClose}
-            style={{textAlign: 'center'}}>
-            <h3>Leave a dot and a thought, then check back to see the page transform into a blur of thoughts and colors.</h3>
-            <p style={{fontSize: '0.8em'}}>Inspired by <a href='https://www.designboom.com/art/yayoi-kusama-david-zwirner-obliteration-room-new-york-05-26-2015/'>yayoi kusama's dot-covered obliteration room</a>.</p>
+            bodyStyle={{padding: "0px"}}
+            contentStyle={{ maxWidth: '800px'}}
+            style={{textAlign: "center", padding: "0px"}}
+          >
+            <span className="imgResponsive imgCenter" id="obliterationRoom"></span>
+            <h1>Dot Dot Dots</h1>
+            <p style={{fontSize: '1.2em', padding: '0px 30px', color: 'black'}}>Leave a dot and a lingering thought, then check back to see the page transform into a blur of thoughts and colors.</p>
+            <p style={{fontSize: '0.8em'}}>Inspired by <span style={{color: 'rgb(0, 188, 212)', cursor: 'pointer'}} onClick={() => this.openInNewTab('https://www.designboom.com/art/yayoi-kusama-david-zwirner-obliteration-room-new-york-05-26-2015/')}>yayoi kusama's dot-covered obliteration room</span>.</p>
           </Dialog>
         </div>
       </MuiThemeProvider>

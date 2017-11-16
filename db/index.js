@@ -21,8 +21,9 @@ var dots = mongoose.Schema({
   size: String,
   color: String,
   note: String,
+  likes: Number
   sentiment: String,
-  score: Number
+  score: Number,
 
 });
 dots.plugin(timestamps);

@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
 import $ from 'jquery';
 import axios from 'axios';
-// import {debounce} from 'throttle-debounce';
 import {throttle} from 'throttle-debounce';
+import {MuiThemeProvider} from 'material-ui';
 
+// import {debounce} from 'throttle-debounce';
 // import injectTapEventPlugin from 'react-tap-event-plugin';
-import {MuiThemeProvider, Dialog, TextField, RaisedButton, FlatButton} from 'material-ui';
 
 import Dots from './Dots.js';
 import Form from './Form.js';
+import Intro from './Intro.js';
 import '../css/App.css';
 
 
@@ -17,15 +18,14 @@ class App extends Component {
     super(props);
     this.state = {
       dots: [],
-      sentimentArr: [],
-      sentiment: 'neutral',
+      // sentimentArr: [],
+      // sentiment: 'neutral',
       open: true,
       popupOpen: false,
       anchorEl: undefined,
       value: "",
       charCountErr: false,
     }
-    // this.str = '';
     this.xcord = undefined;
     this.ycord = undefined;
     this.size = '24px';
@@ -36,9 +36,7 @@ class App extends Component {
     this.closeAndSave = this.closeAndSave.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleFormClose = this.handleFormClose.bind(this);
-    this.openInNewTab = this.openInNewTab.bind(this);
   }
-
 
   componentDidMount() {
     axios.get('/dots')
@@ -150,7 +148,7 @@ class App extends Component {
       function(event) {
         var dotSize = $(event.target).css('height');
         dotSize = dotSize.split('px')
-        dotSize = parseInt(dotSize[0]) / 2;
+        dotSize = parseInt(dotSize[0], 10) / 2;
         var div = $(event.target).children();
         var left = -105 + dotSize;
         $(div[0]).css({'top': dotSize, 'left': left});
@@ -160,11 +158,6 @@ class App extends Component {
   })
   .catch( error => console.log(error));
 }
-
-  openInNewTab(url) {;
-    var win = window.open(url, '_blank');
-    win.focus();
-  }
 
   render () {
     $( ".tooltip" ).hover(
@@ -178,7 +171,6 @@ class App extends Component {
       }
     );
 
-
     // const style = {
     //   height: 100,
     //   width: 100,
@@ -187,13 +179,6 @@ class App extends Component {
     //   display: 'inline-block',
     //   zIndex: 20000
     // };
-
-    var dialogAttrs = {
-      modal: false,
-      bodyStyle: {padding: "0px"},
-      style: {textAlign: "center", padding: "0px"},
-    }
-
 
     return (
       <MuiThemeProvider>

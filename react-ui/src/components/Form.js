@@ -30,9 +30,9 @@ const Form = (props) => {
     <Dialog
       {...dialogAttrs}
       >
-        <i className="clear material-icons clearIcon" onClick={props.handleFormClose}>clear</i>
+        <i className="clear material-icons" style={{display: 'flex', justifyContent: 'flex-end', padding: '10px 10px 0 0', cursor: 'pointer'}} onClick={props.handleFormClose}>clear</i>
         <TextField {...textFieldAttrs}/>
-        <RaisedButton label="Submit" primary={true} className="raisedButton" onClick={props.closeAndSave}/>
+        <RaisedButton label="Submit" primary={true} style={{display: 'block', marginTop: '10px', paddingRight: '10px', paddingLeft: '10px', paddingBottom: '10px'}} onClick={props.closeAndSave}/>
       </Dialog>
   )
 }

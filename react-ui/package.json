@@ -12,6 +12,7 @@
     "npm-run-all": "^4.1.2",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
+    "react-icons": "^2.2.7",
     "react-tap-event-plugin": "^3.0.2",
     "throttle-debounce": "^1.0.1"
   },

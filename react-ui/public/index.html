@@ -2,13 +2,27 @@
 <html lang="en">
   <head>
     <title>Dot Dot Dots</title>
-    <meta name="description" content="A digital rendition of Yayoi Kusama's dot-covered Obliteration Room">
+    <meta property="og:title" content="Dot Dot Dots" />
+    <meta name="description" property="og:description" content="A digital rendition of Yayoi Kusama's dot-covered Obliteration Room">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="og:url" content="https://dotdotdots.herokuapp.com/" />
+    <meta property="og:type" content="website" />
+    <!-- <meta property="og:image" content="https://www.your-domain.com/path/image.jpg" /> -->
     <link rel="shortcut icon" href="./favicon.png">
     <link href="https://fonts.googleapis.com/css?family=EB+Garamond" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  </head>
   <body>
+    <div id="fb-root"></div>
+    <script>
+      (function(d, s, id){
+         var js, fjs = d.getElementsByTagName(s)[0];
+         if (d.getElementById(id)) return;
+         js = d.createElement(s); js.id = id;
+         js.src = "https://connect.facebook.net/es_LA/sdk.js";
+         fjs.parentNode.insertBefore(js, fjs);
+       }(document, 'script', 'facebook-jssdk'));
+    </script>
     <div id="app"></div>
   </body>
 </html>

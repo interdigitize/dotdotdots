@@ -8,6 +8,7 @@
   top:0px;
   bottom:0px;
   width: 100%;
+  z-index: -100;
 }
 
 h1 {
@@ -16,21 +17,4 @@ h1 {
   color: black;
   margin: 0px;
   padding: 20px 10px 0;
-}
-
-.imgResponsive {
-  width: 100%;
-  height: auto;
-  display:block
-}
-
-.imgCenter {
-  height: 350px;
-  background-repeat: no-repeat !important;
-  background-size: cover !important;
-  background-position: center !important;
-}
-
-#obliterationRoom {
-  background-image: url(./../../public/yayoi-kusama-give-me-love-david-zwirner-new-york-designboom-05.jpg);
 }

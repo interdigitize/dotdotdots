@@ -37,20 +37,20 @@ const SideDrawer = (props) => {
           data-layout="button"
           data-size="small"
           data-mobile-iframe="true"
-          style={{paddingRight: '20px', paddingLeft: '30px' }}
+          // style={{paddingRight: '12px', paddingLeft: '20px' }}
           onClick={() => props.openInNewTab(`https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdotdotdots.herokuapp.com%2F&amp;src=sdkpreparse`, '_target')}
         />
         <Twitter
           className='icon'
           onClick={() => props.openInNewTab(`https://twitter.com/share?ref_src=twsrc%5Etfw&hashtags=dotdotdots`, '_target')}
           data-show-count="false"
-          style={{paddingRight: '30px', paddingLeft: '20px' }}
+          style={{paddingRight: '20px', paddingLeft: '12px' }}
         />
 
         <span style={{display: 'block', lineHeight: '1.2em', paddingTop: '7px'}}>You can find more of my work at
           <span style={{color: 'rgb(0, 188, 212)', cursor: 'pointer'}} onClick={() => this.openInNewTab('http://interdigitize.com')}> interdigitize.com
-          </span>
-        </span>.
+          </span>.
+        </span>
       </div>
 
     {/* <p>Do you think this would be an interesting VR app? </p>

@@ -1,15 +1,42 @@
+html {
+  margin:0;
+  padding:0;
+  height:100%;
+  position: relative;
+  overflow: hidden;
+}
+
+body {
+  overflow: hidden;
+  position: static;
+}
+
+
 .dot {
   padding: 0;
   margin: 0;
+}
+
+#dots {
+  position: absolute;
+  top:0px;
+  bottom:0px;
+  z-index: -1;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
 }
 
 #room {
   position: absolute;
   top:0px;
   bottom:0px;
-  width: 100%;
   z-index: -100;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
 }
+
 
 h1 {
   font-family: 'EB Garamond', cursive;
@@ -17,4 +44,56 @@ h1 {
   color: black;
   margin: 0px;
   padding: 20px 10px 0;
+}
+
+@media (max-width:769px) {
+  #menuBtn {
+    display: none;
+  }
+
+  #drawer {
+    display: none;
+  }
+
+  #dots {
+    position: absolute;
+  }
+
+  html {
+    overflow-y: scroll;
+  }
+
+  #mobileIntro {
+    text-align: center;
+    background-color: #e9e9e9;
+    padding: 10px 20px;
+  }
+
+  h1 {
+    padding: 0 10px 0;
+  }
+
+  #mobileOutro {
+    position: fixed;
+    bottom: 0;
+    background-color: #e9e9e9;
+    padding: 10px;
+    font-size: .8em;
+    width: 100%;
+    text-align: center;
+  }
+}
+
+@media (min-width:769px) {
+  #mobileIntro {
+    display: none;
+  }
+
+  #mobileOutro {
+    display: none;
+  }
+}
+
+.container {
+  width: 100%;
 }

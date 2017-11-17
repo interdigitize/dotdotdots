@@ -3,7 +3,6 @@ import $ from 'jquery';
 import axios from 'axios';
 import {throttle} from 'throttle-debounce';
 import {MuiThemeProvider} from 'material-ui';
-
 import MenuBtn from 'react-icons/lib/md/menu';
 
 // import {debounce} from 'throttle-debounce';
@@ -23,7 +22,7 @@ class App extends Component {
       dots: [],
       // sentimentArr: [],
       // sentiment: 'neutral',
-      open: true,
+      open: false,
       popupOpen: false,
       anchorEl: undefined,
       value: "",
@@ -60,9 +59,17 @@ class App extends Component {
   componentDidMount() {
     axios.get('/dots')
     .then( response => {
-      this.setState({
-        dots: response.data
-      })
+      if (window.innerWidth > 769) {
+        this.setState({
+          dots: response.data,
+          open: true
+        })
+      } else {
+        this.setState({
+          dots: response.data
+        })
+      }
+      this.dotHover();
     })
     .catch( error => console.log(error) );
   }
@@ -204,15 +211,32 @@ class App extends Component {
     return (
       <MuiThemeProvider>
         <div>
+          <div id='mobileIntro'>
+            <h1>Dot Dot Dots</h1>
+            <span style={{fontSize: '.8em'}}>Click to add a dot and a thought.</span>
+          </div>
+          <Intro
+            open={this.state.open}
+            handleClose={this.handleIntroClose}
+            openInNewTab={this.openInNewTab}
+          />
           <SideDrawer
             drawerOpen={this.state.drawerOpen}
             handleToggle={this.handleDrawerToggle}
             dots={this.state.dots}
             openInNewTab={this.openInNewTab}
+            id='drawer'
           />
-          <MenuBtn style={{zIndex: '100', padding: '20px', display: 'inline'}}onClick={this.handleDrawerToggle}>menu</MenuBtn>
+          <MenuBtn id='menuBtn' style={{zIndex: '100', paddingTop: '20px', paddingLeft: '20px'}}onClick={this.handleDrawerToggle}>menu</MenuBtn>
 
-          <Dots dots={this.state.dots} incrementLike={this.incrementLike} openInNewTab={this.openInNewTab}/>
+          <Dots
+            dots={this.state.dots}
+            incrementLike={this.incrementLike}
+            openInNewTab={this.openInNewTab}
+            addDot={this.addDot}
+            dotHover={this.dotHover}
+
+          />
           <Form
             value={this.state.value}
             handleChange={this.handleFormInputChange}
@@ -221,12 +245,6 @@ class App extends Component {
             handleFormClose={this.handleFormClose}
             closeAndSave={this.closeAndSave}
           />
-          <Intro
-            open={this.state.open}
-            handleClose={this.handleIntroClose}
-            openInNewTab={this.openInNewTab}
-          />
-        <div id='room' onClick={this.addDot} ></div>
       </div>
       </MuiThemeProvider>
     )

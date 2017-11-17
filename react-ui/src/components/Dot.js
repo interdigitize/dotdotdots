@@ -3,6 +3,7 @@ import '../css/Dot.css';
 import Twitter from 'react-icons/lib/fa/twitter';
 import ThumbsUp from 'react-icons/lib/fa/thumbs-up';
 import ThumbsDown from 'react-icons/lib/fa/thumbs-down';
+import $ from 'jquery';
 
 const Dot = (props) => {
 
@@ -34,7 +35,10 @@ const Dot = (props) => {
           }}>
           <span
             className='icon'
-            onClick={() => props.incrementLike(props.dot)}
+            onClick={() => {
+              props.incrementLike(props.dot)
+              $(this).attr('disabled')
+            }}
           >
             <ThumbsUp />
             <span

@@ -36,7 +36,7 @@ const Form = (props) => {
         <span style={{display: 'flex', justifyContent: 'flex-end', padding: '10px 10px 0 0', cursor: 'pointer'}} >
           <Clear onClick={props.handleFormClose}>clear</Clear>
         </span>
-        <TextField {...textFieldAttrs} autoFocus={true} style={{width: '275px'}}/>
+        <TextField {...textFieldAttrs} autoFocus={true} style={{maxWidth: '90%'}}/>
         <RaisedButton
           label="Submit"
           primary={true}

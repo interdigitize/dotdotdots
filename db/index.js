@@ -21,7 +21,7 @@ var dots = mongoose.Schema({
   size: String,
   color: String,
   note: String,
-  likes: Number
+  likes: Number,
   sentiment: String,
   score: Number,
 
@@ -43,7 +43,7 @@ var saveDot = (dotToSave) => {
 
 var selectAll = function(callback) {
   Dot.find({}, function(err, dots) {
-    console.log('DB dots', dots);
+    // console.log('DB dots', dots);
     if(err) {
       callback(err, null);
     } else {
@@ -60,8 +60,20 @@ var selectOne = function (query, callback) {
       callback(null, dot);
     }
   });
+
 }
 
+var update = function (conditions, update, callback) {
+  Dot.findOneAndUpdate(conditions, update, function(err, dot) {
+    if (err) {
+      callback(err, null);
+    } else {
+      callback(null, dot);
+    };
+  })
+}
+
+module.exports.update = update;
 module.exports.saveDot = saveDot;
 module.exports.selectOne = selectOne;
 module.exports.selectAll = selectAll;

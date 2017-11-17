@@ -27,6 +27,18 @@ app.post('/dot', function (req, res) {
   res.send(req.body);
 });
 
+app.put('/dot', function (req, res) {
+  db.update({ color : req.body.dot.color}, {likes: req.body.dot.likes}, function(err, data) {
+    if(err) {
+      console.log('err', err);
+      res.sendStatus(500);
+    } else {
+      res.set('Content-Type', 'application/json');
+      res.send(data);
+    }
+  })
+});
+
 // All remaining requests return the React app, so it can handle routing.
 app.get('*', function(request, response) {
   response.sendFile(path.resolve(__dirname, '../react-ui/build', 'index.html'));

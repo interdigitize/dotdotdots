@@ -1,5 +1,7 @@
 import React from 'react';
 import {Dialog, TextField, RaisedButton} from 'material-ui';
+import Clear from 'react-icons/lib/md/clear';
+
 import '../css/Form.css';
 
 const Form = (props) => {
@@ -26,13 +28,20 @@ const Form = (props) => {
     onRequestClose: props.handleFormClose,
     contentStyle: { maxWidth: '300px'},
   }
+
   return (
     <Dialog
       {...dialogAttrs}
       >
-        <i className="clear material-icons" style={{display: 'flex', justifyContent: 'flex-end', padding: '10px 10px 0 0', cursor: 'pointer'}} onClick={props.handleFormClose}>clear</i>
-        <TextField {...textFieldAttrs}/>
-        <RaisedButton label="Submit" primary={true} style={{display: 'block', marginTop: '10px', paddingRight: '10px', paddingLeft: '10px', paddingBottom: '10px'}} onClick={props.closeAndSave}/>
+        <span style={{display: 'flex', justifyContent: 'flex-end', padding: '10px 10px 0 0', cursor: 'pointer'}} >
+          <Clear onClick={props.handleFormClose}>clear</Clear>
+        </span>
+        <TextField {...textFieldAttrs} autoFocus={true} style={{width: '275px'}}/>
+        <RaisedButton
+          label="Submit"
+          primary={true}
+          style={{display: 'block', marginTop: '10px', paddingRight: '10px', paddingLeft: '10px', paddingBottom: '10px'}}
+          onClick={props.closeAndSave}/>
       </Dialog>
   )
 }

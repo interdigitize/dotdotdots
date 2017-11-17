@@ -4,9 +4,12 @@ import axios from 'axios';
 import {throttle} from 'throttle-debounce';
 import {MuiThemeProvider} from 'material-ui';
 
+import MenuBtn from 'react-icons/lib/md/menu';
+
 // import {debounce} from 'throttle-debounce';
 // import injectTapEventPlugin from 'react-tap-event-plugin';
 
+import SideDrawer from './SideDrawer.js';
 import Dots from './Dots.js';
 import Form from './Form.js';
 import Intro from './Intro.js';
@@ -25,17 +28,33 @@ class App extends Component {
       anchorEl: undefined,
       value: "",
       charCountErr: false,
+      drawerOpen: false,
     }
     this.xcord = undefined;
     this.ycord = undefined;
     this.size = '24px';
     this.color = 'yellow';
     // injectTapEventPlugin();
-    this.handleClose = this.handleClose.bind(this);
+    this.handleIntroClose = this.handleIntroClose.bind(this);
     this.addDot = this.addDot.bind(this);
     this.closeAndSave = this.closeAndSave.bind(this);
-    this.handleChange = this.handleChange.bind(this);
+    this.handleFormInputChange = this.handleFormInputChange.bind(this);
     this.handleFormClose = this.handleFormClose.bind(this);
+    this.handleDrawerToggle = this.handleDrawerToggle.bind(this);
+    this.incrementLike = this.incrementLike.bind(this);
+    this.openInNewTab = this.openInNewTab.bind(this);
+    this.dotHover = () => {
+      return ($( ".tooltip" ).hover(
+        function(event) {
+          var dotSize = $(event.target).css('height');
+          dotSize = dotSize.split('px')
+          dotSize = parseInt(dotSize[0], 10) / 2;
+          var div = $(event.target).children();
+          var left = -90 + dotSize;
+          $(div[0]).css({'top': dotSize, 'left': left});
+        })
+      )
+    }
   }
 
   componentDidMount() {
@@ -82,8 +101,8 @@ class App extends Component {
     })
   }
 
-  handleClose () {
-    this.setState({open: false});
+  handleIntroClose () {
+    this.setState({open: false, drawerOpen: true});
   };
 
   handleFormClose () {
@@ -91,7 +110,7 @@ class App extends Component {
     $('.temp').remove();
   };
 
-  handleChange(event) {
+  handleFormInputChange(event) {
     // this.str += ;
     if ( event.target.value.length > 140) {
       this.setState({charCountErr: true});
@@ -132,71 +151,83 @@ class App extends Component {
       ycord: this.ycord,
       xcord: this.xcord,
       size: this.size,
-      color: this.color
+      color: this.color,
+      likes: 0
     }, {
       headers: { Accept: "text/javascript"}
-    }
-  )
-  .then( response => {
-    let res = this.state.dots.concat(response.data);
-    this.setState({
-      dots: res,
-      value: ''
     })
-    $('.temp').remove();
-    $( ".tooltip" ).hover(
-      function(event) {
-        var dotSize = $(event.target).css('height');
-        dotSize = dotSize.split('px')
-        dotSize = parseInt(dotSize[0], 10) / 2;
-        var div = $(event.target).children();
-        var left = -105 + dotSize;
-        $(div[0]).css({'top': dotSize, 'left': left});
-      }
-    );
+    .then( response => {
+      let res = this.state.dots.concat(response.data);
+      this.setState({
+        dots: res,
+        value: ''
+      })
+      $('.temp').remove();
+      this.dotHover();
 
-  })
-  .catch( error => console.log(error));
-}
+    })
+    .catch( error => console.log(error));
+  }
+
+  handleDrawerToggle() {
+    this.setState({drawerOpen: !this.state.drawerOpen});
+  }
+
+  incrementLike(dot) {
+    dot.likes = ++dot.likes
+    axios.put('/dot', {
+      dot: dot
+    }, {
+      headers: { Accept: "text/javascript"}
+    })
+    .then( response => {
+      // $(#).attr('disabled')
+      axios.get('/dots')
+      .then( response => {
+        this.setState({
+          dots: response.data
+        })
+      })
+      .catch( error => console.log(error) );
+    })
+    .catch( error => console.log(error));
+  }
+
+  openInNewTab(url) {
+    var win = window.open(url, '_blank');
+    win.focus();
+  }
 
   render () {
-    $( ".tooltip" ).hover(
-      function(event) {
-        var dotSize = $(event.target).css('height');
-        dotSize = dotSize.split('px')
-        dotSize = parseInt(dotSize[0], 10) / 2;
-        var div = $(event.target).children();
-        var left = -105 + dotSize;
-        $(div[0]).css({'top': dotSize, 'left': left});
-      }
-    );
-
-    // const style = {
-    //   height: 100,
-    //   width: 100,
-    //   margin: 20,
-    //   textAlign: 'center',
-    //   display: 'inline-block',
-    //   zIndex: 20000
-    // };
+    this.dotHover();
 
     return (
       <MuiThemeProvider>
-        <div id='room' onClick={this.addDot} >
-          {/* <div style={{marginTop:'20px', marginLeft: '15px', fontFamily: 'Helvetica'}}>There are {this.state.dots.length} dots and thoughts.</div> */}
-          <Dots dots={this.state.dots} sentiment={this.state.sentimentArr}/>
+        <div>
+          <SideDrawer
+            drawerOpen={this.state.drawerOpen}
+            handleToggle={this.handleDrawerToggle}
+            dots={this.state.dots}
+            openInNewTab={this.openInNewTab}
+          />
+          <MenuBtn style={{zIndex: '100', padding: '20px', display: 'inline'}}onClick={this.handleDrawerToggle}>menu</MenuBtn>
+
+          <Dots dots={this.state.dots} incrementLike={this.incrementLike} openInNewTab={this.openInNewTab}/>
           <Form
             value={this.state.value}
-            handleChange={this.handleChange}
+            handleChange={this.handleFormInputChange}
             charCountErr={this.charCountErr}
             popupOpen={this.state.popupOpen}
             handleFormClose={this.handleFormClose}
+            closeAndSave={this.closeAndSave}
           />
           <Intro
             open={this.state.open}
-            handleClose={this.handleClose}
+            handleClose={this.handleIntroClose}
+            openInNewTab={this.openInNewTab}
           />
-        </div>
+        <div id='room' onClick={this.addDot} ></div>
+      </div>
       </MuiThemeProvider>
     )
   }

@@ -31,6 +31,7 @@ class Dot extends Component {
   }
 
   togglePopup() {
+    console.log('toggled');
     this.setState({ isOpen: !this.state.isOpen });
   }
 

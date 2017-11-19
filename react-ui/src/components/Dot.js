@@ -27,12 +27,6 @@ class Dot extends Component {
     this.hidePopover = this.hidePopover.bind(this);
     this.trackMouse = this.trackMouse.bind(this);
     this.untrackMouse = this.untrackMouse.bind(this);
-    this.togglePopup = this.togglePopup.bind(this);
-  }
-
-  togglePopup() {
-    console.log('toggled');
-    this.setState({ isOpen: !this.state.isOpen });
   }
 
   showPopover() {
@@ -94,7 +88,7 @@ class Dot extends Component {
         className={ popUpAltered ? "tooltiptext hidden" : "tooltiptext"}
         onMouseEnter={this.trackMouse}
         onMouseLeave={this.untrackMouse}
-        onClick={this.togglePopup}
+        onClick={this.untrackMouse}
       >
         <div id='note' style={{padding: '10px'}}> {this.props.dot.note}</div>
           <div>
@@ -129,6 +123,7 @@ class Dot extends Component {
     return (
 
       <div
+        onClick={this.trackMouse}
         className='tooltip'
         onMouseEnter={() => this.trackMouse(popoverBody)}
         onMouseLeave={this.untrackMouse}

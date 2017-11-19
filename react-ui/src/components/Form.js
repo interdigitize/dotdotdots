@@ -15,9 +15,14 @@ const Form = (props) => {
     onChange: props.handleChange,
   };
 
-  if (props.charCountErr) {
-    textFieldAttrs['errorText'] = "Sorry, there is a 140 character limit. Let your concise skills shine!";
-    textFieldAttrs['errorStyle'] = {lineHeight: '1.1em'};
+  if (props.charCountErr[0]) {
+    if(props.charCountErr[1] === 140) {
+      textFieldAttrs['errorText'] = "Sorry, there is a 140 character limit. Let your concise skills shine!";
+      textFieldAttrs['errorStyle'] = {lineHeight: '1.1em'};
+    } else {
+      textFieldAttrs['errorText'] = "Please try again when you have something on your mind.";
+      textFieldAttrs['errorStyle'] = {lineHeight: '1.1em'};
+    }
   }
 
   var dialogAttrs = {
@@ -30,19 +35,25 @@ const Form = (props) => {
   }
 
   return (
-    <Dialog
-      {...dialogAttrs}
-      >
-        <span style={{display: 'flex', justifyContent: 'flex-end', padding: '10px 10px 0 0', cursor: 'pointer'}} >
-          <Clear onClick={props.handleFormClose}>clear</Clear>
-        </span>
-        <TextField {...textFieldAttrs} autoFocus={true} style={{maxWidth: '90%'}}/>
-        <RaisedButton
-          label="Submit"
-          primary={true}
-          style={{display: 'block', marginTop: '10px', paddingRight: '10px', paddingLeft: '10px', paddingBottom: '10px'}}
-          onClick={props.closeAndSave}/>
-      </Dialog>
+    <Dialog {...dialogAttrs}>
+      <span
+        className='close'
+        style={{padding: '10px 10px 0 0'}} >
+        <Clear
+          onClick={props.handleFormClose}> clear
+        </Clear>
+      </span>
+      <TextField {...textFieldAttrs}
+        autoFocus={true}
+        style={{maxWidth: '90%'}}
+      />
+      <RaisedButton
+        label="Submit"
+        primary={true}
+        onClick={props.closeAndSave}
+        className='raisedButton'
+      />
+    </Dialog>
   )
 }
 

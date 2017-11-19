@@ -1,14 +1,12 @@
 
-// .clearIcon {
-//   display: flex;
-//   justify-content: flex-end;
-//   padding: 10px 10px 0 0;
-//   cursor: pointer;
-// }
-// .raisedButton {
-//   display: block;
-//   margin-top: 10px;
-//   padding-right: 10px;
-//   padding-left: 10px;
-//   padding-bottom: 10px;
-// }
+.raisedButton {
+  display: block !important;
+  margin-top: 10px;
+  padding: 0px 10px 10px;
+}
+
+.close {
+  display: flex;
+  justify-content: flex-end;
+  cursor: pointer;
+}

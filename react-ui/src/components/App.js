@@ -4,7 +4,7 @@ import axios from 'axios';
 import {throttle} from 'throttle-debounce';
 import {MuiThemeProvider} from 'material-ui';
 import MenuBtn from 'react-icons/lib/md/menu';
-
+import fns from '../helperfns'
 // import {debounce} from 'throttle-debounce';
 // import injectTapEventPlugin from 'react-tap-event-plugin';
 
@@ -26,7 +26,7 @@ class App extends Component {
       popupOpen: false,
       anchorEl: undefined,
       value: "",
-      charCountErr: false,
+      charCountErr: [false, -1],
       drawerOpen: false,
     }
     this.xcord = undefined;
@@ -36,24 +36,13 @@ class App extends Component {
     // injectTapEventPlugin();
     this.handleIntroClose = this.handleIntroClose.bind(this);
     this.addDot = this.addDot.bind(this);
-    this.closeAndSave = this.closeAndSave.bind(this);
+    this.closeFormSaveDot = this.closeFormSaveDot.bind(this);
     this.handleFormInputChange = this.handleFormInputChange.bind(this);
     this.handleFormClose = this.handleFormClose.bind(this);
     this.handleDrawerToggle = this.handleDrawerToggle.bind(this);
     this.incrementLike = this.incrementLike.bind(this);
-    this.openInNewTab = this.openInNewTab.bind(this);
-    this.dotHover = () => {
-      return ($( ".tooltip" ).hover(
-        function(event) {
-          var dotSize = $(event.target).css('height');
-          dotSize = dotSize.split('px')
-          dotSize = parseInt(dotSize[0], 10) / 2;
-          var div = $(event.target).children();
-          var left = -90 + dotSize;
-          $(div[0]).css({'top': dotSize, 'left': left});
-        })
-      )
-    }
+    this.calculateDotSize = fns.calculateDotSize.bind(this);
+    this.openInNewTab = fns.openInNewTab.bind(this);
   }
 
   componentDidMount() {
@@ -69,21 +58,13 @@ class App extends Component {
           dots: response.data
         })
       }
-      this.dotHover();
     })
     .catch( error => console.log(error) );
   }
 
-  colorSurprise() {
-    function randomizer(){
-      return Math.floor(Math.random() * (255 - 20) + 20);
-    }
-    this.color = `rgb(${randomizer()}, ${randomizer()}, ${randomizer()})`
-  }
-
   addDot(e){
     this.showForm(e);
-    this.colorSurprise();
+    this.color = fns.colorSurprise();
     var $div = $('<div>');
     this.xcord = (e.clientX - 20) + 'px';
     this.ycord = (e.clientY - 12) + 'px';
@@ -113,46 +94,39 @@ class App extends Component {
   };
 
   handleFormClose () {
-    this.setState({popupOpen: false});
+    this.setState({
+      popupOpen: false,
+      value: '',
+      charCountErr: [false, -1]
+    });
     $('.temp').remove();
   };
 
   handleFormInputChange(event) {
-    // this.str += ;
-    if ( event.target.value.length > 140) {
-      this.setState({charCountErr: true});
+    if (event.target.value.length > 140) {
+      this.setState({charCountErr: [true, 140]});
     } else {
       throttle( 200,
         this.setState({
             value: event.target.value,
-            charCountErr: false
+            charCountErr: [false, -1]
         })
       )
     }
   }
 
-  closeAndSave() {
+  closeFormSaveDot() {
+    if (this.state.value.length === 0) {
+      this.setState({
+        charCountErr: [true, 0]
+      })
+      return;
+    }
     this.setState({
       popupOpen: false,
       charCountErr: false
     });
-    //calculate size based on value
-    let valLength = this.state.value.length;
-    if (valLength <= 15) {
-      this.size = '10px';
-    }
-    if (valLength > 15 && valLength <= 30) {
-      this.size = '20px'
-    }
-    if (valLength > 30 && valLength <= 60) {
-      this.size = '40px'
-    }
-    if (valLength > 60 && valLength <= 120) {
-      this.size = '80px'
-    }
-    if (valLength > 120 && valLength <= 140) {
-      this.size = '120px'
-    }
+    this.size = this.calculateDotSize(this.state.value.length);
     axios.post('/dot', {
       note: this.state.value,
       ycord: this.ycord,
@@ -170,8 +144,6 @@ class App extends Component {
         value: ''
       })
       $('.temp').remove();
-      this.dotHover();
-
     })
     .catch( error => console.log(error));
   }
@@ -200,26 +172,19 @@ class App extends Component {
     .catch( error => console.log(error));
   }
 
-  openInNewTab(url) {
-    var win = window.open(url, '_blank');
-    win.focus();
-  }
-
   render () {
-    this.dotHover();
-
     return (
       <MuiThemeProvider>
         <div>
-          <div id='mobileIntro'>
-            <h1>Dot Dot Dots</h1>
-            <span style={{fontSize: '.8em'}}>Click to add a dot and a thought.</span>
-          </div>
           <Intro
             open={this.state.open}
             handleClose={this.handleIntroClose}
             openInNewTab={this.openInNewTab}
           />
+          <div id='mobileIntro'>
+            <h1>Dot Dot Dots</h1>
+            <span className='font-sm'>Click to add a dot and a thought.</span>
+          </div>
           <SideDrawer
             drawerOpen={this.state.drawerOpen}
             handleToggle={this.handleDrawerToggle}
@@ -227,23 +192,20 @@ class App extends Component {
             openInNewTab={this.openInNewTab}
             id='drawer'
           />
-          <MenuBtn id='menuBtn' style={{zIndex: '100', paddingTop: '20px', paddingLeft: '20px'}}onClick={this.handleDrawerToggle}>menu</MenuBtn>
-
+          <MenuBtn id='menuBtn' onClick={this.handleDrawerToggle}>menu</MenuBtn>
           <Dots
             dots={this.state.dots}
             incrementLike={this.incrementLike}
             openInNewTab={this.openInNewTab}
             addDot={this.addDot}
-            dotHover={this.dotHover}
-
           />
           <Form
             value={this.state.value}
             handleChange={this.handleFormInputChange}
-            charCountErr={this.charCountErr}
+            charCountErr={this.state.charCountErr}
             popupOpen={this.state.popupOpen}
             handleFormClose={this.handleFormClose}
-            closeAndSave={this.closeAndSave}
+            closeAndSave={this.closeFormSaveDot}
           />
       </div>
       </MuiThemeProvider>

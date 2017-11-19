@@ -1,13 +1,3 @@
-// @mixin tooltipOffset($radius) {
-//   -webkit-border-radius: $radius;
-//      -moz-border-radius: $radius;
-//       -ms-border-radius: $radius;
-//           border-radius: $radius;
-// }
-//
-// .box { @include tootipOffset(10px); }
-
-
 .icon {
   color: #666666;
 }
@@ -17,49 +7,28 @@
 }
 
 .tooltip {
-    position: relative;
-    display: inline-block;
+    // position: relative;
+    // display: inline-block;
     padding: 0px;
     /*border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
 }
 
 /* Tooltip text */
 .tooltip .tooltiptext {
-    visibility: hidden;
-    width: 180px;
+    visibility: visible;
     background-color: white;
+    width: 160px;
     color: #333;
     text-align: center;
     border-radius: 6px;
     word-wrap: break-word;
     box-shadow: 0 8px 15px rgba(0,0,0,0.19), 0 0px 7px rgba(0,0,0,0.23);
     position: absolute;
-    left: -105px;
-    top: 16px;
-    z-index: 100;
+    // left: 0%;
+    top: 50%;
+    z-index: 1000;
     margin:0;
-}
-
-/* Show the tooltip text when you mouse over the tooltip container */
-.tooltip:hover .tooltiptext {
-    visibility: visible;
-    //get the height of the element
-    //set .tooltiptext tooltiptext top
-    //set .tooltiptext tooltiptext left
-}
-
-.tooltip .tooltiptext::after {
-    content: " ";
-    position: absolute;
-    bottom: 100%;  /* At the top of the tooltip */
-    left: 50%;
-    margin-left: -5px;
-    border-width: 5px;
-    border-style: solid;
-    border-color: transparent transparent white transparent;
-}
-
-.tooltip .tooltiptext {
+    text-align: center;
     opacity: 0;
     transition: opacity 1s;
 }
@@ -67,3 +36,50 @@
 .tooltip:hover .tooltiptext {
     opacity: 1;
 }
+
+.tooltiptext::after {
+    content: " ";
+    position: absolute;
+    bottom: 100%;  /* At the top of the tooltip */
+    // left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent white transparent;
+}
+
+.tooltiptext.hidden::after {
+  visibility: hidden;
+}
+
+//     .tooltiptext:after /* triangle decoration */
+//     {
+//         width: 0;
+//         height: 0;
+//         border-left: 10px solid transparent;
+//         border-right: 10px solid transparent;
+//         border-top: 10px solid #fff;
+//         bottom: -10px;
+//         margin-left: -10px;
+//     }
+
+//        .tooltiptext.top:after
+//         {
+//             border-top-color: transparent;
+//             border-bottom: 10px solid #fff;
+//             top: -20px;
+//             bottom: auto;
+//         }
+//
+//         .tooltiptext.left:after
+//         {
+//             left: 10px;
+//             margin: 0;
+//         }
+//
+//         .tooltiptext.right:after
+//         {
+//             right: 10px;
+//             left: auto;
+//             margin: 0;
+//         }

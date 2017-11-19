@@ -1,0 +1,24 @@
+.dot {
+  padding: 0;
+  margin: 0;
+}
+
+#dots {
+  position: absolute;
+  top:0px;
+  bottom:0px;
+  z-index: -1;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+#room {
+  position: absolute;
+  top:0px;
+  bottom:0px;
+  z-index: -100;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}

@@ -31,5 +31,16 @@ Here is an excerpt from an article about Yayoi's installation:
 ## What problem does this solve? ##
 Not everyone can travel somewhere to see an exhibition. A digital rendition changes the experience, but it is more accessible and furthers the concept and ability to participate.
 
-## How to Get Started ##
- Once you land on the page, you can add dots, similar to adding stickers in the real space. You can also leave a note on the dots you add. As you hover over previously added dots you can read notes that were left.
+## How to Start the App ##
+
+ * ``` git clone https://github.com/interdigitize/dotdotdots.git ```
+
+ * ``` cd dotdotdots ```
+
+ * In a terminal tab, start MongoDB ```mongod```
+
+ * In another terminal tab, start the server ``` yarn start ``` or ```yarn start dev``` if you would like to run it with nodemon.
+
+ * Visit *localhost:5000* in your browser.
+
+ NOTE: If you edit anything in the react-ui folder, remember to rebuild. ``` yarn build```

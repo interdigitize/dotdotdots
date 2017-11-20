@@ -60,8 +60,8 @@ const SideDrawer = (props) => {
           style={{paddingRight: '20px', paddingLeft: '12px' }}
         />
 
-        <span style={{display: 'block', lineHeight: '1.2em', paddingTop: '7px'}}>You can find more of my work at
-          <span className='link' onClick={() => this.openInNewTab('http://interdigitize.com')}> interdigitize.com
+          <span style={{display: 'block', lineHeight: '1.2em', paddingTop: '7px'}}>You can find more of my work at
+          <span className='link' onClick={() => props.openInNewTab('http://interdigitize.com')}> interdigitize.com
           </span>.
         </span>
       </div>
